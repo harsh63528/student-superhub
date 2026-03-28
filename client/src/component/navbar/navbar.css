@@ -1,0 +1,15 @@
+nav{
+    padding: 5px;
+    background-color:black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 2px green;
+}
+
+.logo{
+    font-family: cursive;
+    font-style:italic;
+}
+

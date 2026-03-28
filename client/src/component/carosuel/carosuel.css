@@ -1,0 +1,15 @@
+.carosuel{
+    margin-top: 5px;
+    display: flex;
+    height: 200px;
+    width: 99%;
+    border-style: solid;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+button{
+  background-color: transparent;
+  border-style: solid;
+}
