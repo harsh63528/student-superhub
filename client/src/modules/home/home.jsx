@@ -4,7 +4,7 @@ export default function Home(){
     return(
         <>
         <Carsouel/>
-        <h1>home</h1>
+        <h1>Started coding on home section</h1>
         </>
     )
 }
