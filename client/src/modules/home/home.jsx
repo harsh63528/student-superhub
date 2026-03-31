@@ -1,10 +1,11 @@
 import './home.css'
 import Carsouel from '../../component/carosuel/carosuel'
+import RecentActivity from '../../component/recentActivity/recentActivity'
 export default function Home(){
     return(
         <>
         <Carsouel/>
-        <h1>Started coding on home section</h1>
+        <RecentActivity/>
         </>
     )
 }
