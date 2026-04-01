@@ -1,11 +1,8 @@
-import http from 'node:http'
+import app from "./src/server.js";
 
-const server=http.createServer((req,res)=>{
-    if('/'){
-        res.end('hello i m running')
-    }
-})
+const {PORT} = process.env ;
 
-server.listen(8000,()=>{
-    console.log('i am running on 8000')
+
+app.listen(PORT,()=>{
+    console.log(`http:localhost:${PORT}`)
 })
