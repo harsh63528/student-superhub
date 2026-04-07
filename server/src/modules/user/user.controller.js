@@ -1,6 +1,6 @@
 import User from "../../models/user.model.js";
 import generateToken from "../../utility/jwtToken.utility.js";
-import VerificationJwt from "../../models/verificationjwt.model.js"
+import { sendVerificationEmail } from "../../services/mail.services.js";
 
 export async function registerUser(req, res) {
     try {
@@ -21,11 +21,12 @@ export async function registerUser(req, res) {
 
         const token = generateToken(user);
         
-        const verificationToken = new VerificationJwt({
-            userId:user._id,
-            token:token
-        })
-        await verificationToken.save();
+        const emailSent = await sendVerificationEmail(email, token);
+
+        if (!emailSent) {
+            return res.status(500).json({ message: 'Failed to send verification email' });
+        }
+        
 
         
     } catch (error) {
