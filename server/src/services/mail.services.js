@@ -28,6 +28,6 @@ export default function sendVerificationEmail(email, token) {
     });
 
    } catch (error) {
-    
+    console.log(`error : ${error}`)
    }
 }
