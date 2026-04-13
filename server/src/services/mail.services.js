@@ -1,33 +1,28 @@
 import nodemailer from 'nodemailer';
 
-export default function sendVerificationEmail(email, token) {
-   try {
-    let transporter=nodemailer.createTransport({
-        service:'gmail',
-        auth:{
-            user:process.env.SenderEmail,
-            pass:process.env.SenderPassword
-        }
-    })
-
-    let mailOptions={
-        from:process.env.SenderEmail,
-        to:email,
-        subject:'Email Verification',
-        text:`Please verify your email by clicking the following link: http://localhost:5000/api/user/verify-email?token=${token}`
-    }
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending verification email:', error);
-            reject(false);
-        } else {
-            console.log('Verification email sent:', info.response);
-            resolve(true);
-        }
+export default async function sendVerificationEmail(email, token) {
+  try {
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.SenderEmail,
+        pass: process.env.SenderPassword
+      }
     });
 
-   } catch (error) {
-    console.log(`error : ${error}`)
-   }
+    let mailOptions = {
+      from: process.env.SenderEmail,
+      to: email,
+      subject: 'Email Verification',
+      html: `<p>Please verify your email by clicking: 
+        <a href="http://localhost:5000/api/users/verify/${token}">Verify Email</a></p>`
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Verification email sent:', info.response);
+    return true;
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+    return false;
+  }
 }
