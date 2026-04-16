@@ -71,31 +71,65 @@ export async function verifyEmail(req, res) {
   }
 }
 
-export async function loginUser(req, res) {
-    try{
-        const {email,password}=req.body;
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-        if(!email || !password){
-            return res.status(400).json({message:'All fields are required'})
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        const isExist=await User.findOne({email});
-        if(!isExist){
-            return res.status(400).json({message:'Invalid credentials email'})
-        }
-        const isMatch=await bcrypt.compare(password,isExist.password);
-        if(!isMatch){
-            return res.status(400).json({message:'Invalid credentials password'})
-        }
-        if(!isExist.verified){
-            return res.status(400).json({message:'Please verify your email before logging in'})
-        }
-        const token=generateToken(isExist);
-        res.cookie('token', token, { httpOnly: true, secure: !!(process.env.NODE_ENV === 'production'), sameSite: 'strict' });
+        console.log("User:", user);
+        console.log("Password from DB:", user.password);
 
-        res.status(200).json({user:{id:isExist._id,name:isExist.name,email:isExist.email}});
+        const isMatch = await bcrypt.compare(password, user.password);
+        console.log("Match:", isMatch);
 
-    }catch(error){
-        res.status(500).json({ message: 'Server error', error: error.message });
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        if (!user.verified) {
+            return res.status(403).json({ message: "Verify your email first" });
+        }
+
+        const token = generateToken(user);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false
+        });
+
+        res.status(200).json({ message: "Login success" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server error" });
     }
-}
+};
+
+export const checkaccount = async (req, res) => {
+    try {
+        const {token} = req.cookies;
+
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        res.status(200).json({ user });
+    } catch (error) {        res.status(500).json({ message: "Server error" });
+    }}
+
+    export const logoutUser = async (req, res) => {
+        try {
+            res.clearCookie("token");
+            res.status(200).json({ message: "Logout success" });
+        } catch (error) {
+            res.status(500).json({ message: "Server error" });
+        }}
