@@ -1,14 +1,14 @@
 # Student Superhub
 
-A comprehensive productivity platform designed for students, featuring AI chat, file conversion tools, note-taking, and more.
+Student Superhub is a productivity platform built for students. It combines an AI-powered chat assistant, file conversion tools, note-taking, and a set of study utilities in one web application.
 
 ## Features
 
-- **AI Chat**: Interactive AI-powered chat assistant for learning and problem-solving
-- **File Converter**: Convert files between different formats
-- **Notes**: Organize and manage your study notes
-- **Tools**: Collection of useful student tools
-- **Recent Activity**: Track your recent interactions and activities
+- **AI Chat**: Ask questions and get instant study support
+- **File Converter**: Convert supported files between formats
+- **Notes**: Create, edit, and organize study notes
+- **Tools**: Useful student utilities and helpers
+- **Recent Activity**: Review recent actions and usage history
 
 ## Tech Stack
 
@@ -25,53 +25,67 @@ A comprehensive productivity platform designed for students, featuring AI chat, 
 - Express.js
 - MongoDB
 - JWT Authentication
-- Email Services
+- Email service support
 
 ## Installation
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- MongoDB
+- Node.js 16 or higher
+- MongoDB installed and running
 - npm or yarn
 
 ### Setup
 
-1. **Clone the repository**
+1. Clone the repository
 
    ```bash
    git clone <repository-url>
    cd student-superhub
    ```
 
-2. **Install server dependencies**
+2. Install server dependencies
 
    ```bash
    cd server
    npm install
    ```
 
-3. **Install client dependencies**
+3. Install client dependencies
 
    ```bash
    cd ../client
    npm install
    ```
 
-4. **Environment Setup**
-   - Create `.env` file in server directory
-   - Add required environment variables (MongoDB URI, JWT secret, email config, etc.)
+4. Create the environment file for the server
 
-5. **Start MongoDB**
-   Make sure MongoDB is running on your system
+   ```bash
+   cd ../server
+   copy NUL .env
+   ```
 
-6. **Start the development servers**
+5. Configure `server/.env`
+
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/student-superhub
+   JWT_SECRET=your_jwt_secret
+   SenderEmail=your_email@gmail.com
+   SenderPassword=your_email_password
+   ```
+
+6. Start MongoDB
+
+   Make sure MongoDB is running before starting the server.
+
+7. Start the application
 
    **Server:**
 
    ```bash
    cd server
-   npm start
+   npm run dev
    ```
 
    **Client:**
@@ -81,66 +95,81 @@ A comprehensive productivity platform designed for students, featuring AI chat, 
    npm run dev
    ```
 
-7. **Access the application**
-   Open [http://localhost:5173](http://localhost:5173) in your browser
+8. Open the application
+
+   ```text
+   http://localhost:5173
+   ```
 
 ## Project Structure
 
 ```
 student-superhub/
-├── client/                 # Frontend React application
-│   ├── public/            # Static assets
+├── client/                  # Frontend React application
+│   ├── public/             # Static assets
 │   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   │   ├── navbar/    # Navigation component
-│   │   │   ├── carousel/  # Image carousel
-│   │   │   └── recentActivity/ # Activity tracker
-│   │   ├── modules/       # Feature modules
-│   │   │   ├── ai-chat/   # AI chat functionality
-│   │   │   ├── file-converter/ # File conversion tools
-│   │   │   ├── home/      # Home page
-│   │   │   ├── notes/     # Note-taking feature
-│   │   │   └── tools/     # Additional tools
-│   │   └── data/          # Data management
+│   │   ├── app.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── assets/         # Media and images
+│   │   ├── component/      # Shared UI components
+│   │   │   ├── 404.jsx
+│   │   │   ├── carosuel/
+│   │   │   ├── navbar/
+│   │   │   └── recentActivity/
+│   │   ├── data/           # Static data sources
+│   │   └── modules/        # Feature modules
+│   │       ├── ai chat/
+│   │       ├── file converter/
+│   │       ├── home/
+│   │       ├── notes/
+│   │       └── tools/
 │   └── package.json
-├── server/                 # Backend Node.js application
-│   ├── src/
-│   │   ├── config/        # Database configuration
-│   │   ├── models/        # MongoDB models
-│   │   ├── modules/       # API modules
-│   │   ├── services/      # External services (email, etc.)
-│   │   └── utility/       # Helper utilities
-│   └── package.json
-└── README.md
+├── server/                  # Backend Node.js application
+│   ├── index.js
+│   ├── package.json
+│   └── src/
+│       ├── server.js
+│       ├── config/         # Database configuration
+│       ├── models/         # MongoDB models
+│       ├── modules/        # API modules
+│       │   ├── notes/
+│       │   └── user/
+│       ├── services/       # External services
+│       └── utility/        # Helper utilities
+└── readme.md
 ```
 
 ## API Endpoints
 
-### User Management
+### User
 
-- `POST /api/user/register` - User registration
-- `POST /api/user/login` - User login
-- `GET /api/user/profile` - Get user profile
+- `POST /api/users/register` - Register a new account
+- `GET /api/users/verify/:token` - Verify a new user's email
+- `POST /api/users/login` - Log in with email/password
+- `GET /api/users/profile` - Retrieve the authenticated user profile
+- `POST /api/users/logout` - Log out the current user
 
 ### Notes
 
-- `GET /api/notes` - Get all notes
-- `POST /api/notes` - Create new note
-- `PUT /api/notes/:id` - Update note
-- `DELETE /api/notes/:id` - Delete note
+- `GET /api/notes` - Retrieve notes
+- `POST /api/notes` - Create a note
+- `PUT /api/notes/:id` - Update a note by ID
+- `DELETE /api/notes/:id` - Delete a note by ID
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes
+4. Push to your branch
+5. Open a pull request
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## Support
 
-For support, create an issue in this repository.
+If you need help, open an issue in this repository.
